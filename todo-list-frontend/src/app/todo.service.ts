@@ -28,6 +28,10 @@ export class TodoService {
     return of(undefined).pipe(delay(2_000), map(() => mockData));
   }
 
+  getFilteredMockData(searchTerm: string): Observable<Todo[]> {
+    return of(mockData.filter(todo => todo.task.toLowerCase().includes(searchTerm.toLowerCase())));
+  }
+
   remove(id: number): Observable<void> {
     return new Observable<void>(observer => {
       setTimeout(() => {

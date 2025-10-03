@@ -12,9 +12,9 @@ import {Observable, Subscription} from "rxjs";
     </div>
     <div class="list">
       <label for="search">Search...</label>
-      <input id="search" type="text">
+      <input id="search" type="text" (input)="onTextChange($event)">
       <app-progress-bar *ngIf="isLoading"></app-progress-bar>
-      <app-todo-item *ngFor="let todo of todos$ | async" [item]="todo"></app-todo-item>
+      <app-todo-item *ngFor="let todo of (filteredTodos$ ?? todos$) | async" [item]="todo"></app-todo-item>
     </div>
   `,
   styleUrls: ['app.component.scss']
@@ -22,14 +22,23 @@ import {Observable, Subscription} from "rxjs";
 export class AppComponent {
 
   readonly todos$: Observable<Todo[]>;
+  filteredTodos$: Observable<Todo[]>;
   isLoading = true;
   subscription: Subscription;
+  todoService: TodoService;
 
   constructor(todoService: TodoService) {
+    this.todoService = todoService;
     this.todos$ = todoService.getAll();
+    this.filteredTodos$ = todoService.getAll();
     this.subscription = this.todos$.subscribe({
       complete: () => this.isLoading = false
     });
+  }
+
+  onTextChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.filteredTodos$ = this.todoService.getFilteredMockData(input.value);
   }
 
   ngOnDestroy() {
