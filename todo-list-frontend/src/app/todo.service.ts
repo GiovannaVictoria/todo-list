@@ -1,21 +1,15 @@
-import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
-import {delay} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
-
-export interface Todo {
-  id: number;
-  task: string;
-  priority: 1 | 2 | 3;
-}
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from "rxjs";
+import { Todo } from './types/todo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
 
-  apiUrl: string;
-  http: HttpClient;
+  private apiUrl: string;
+  private http: HttpClient;
 
   constructor(http: HttpClient) {
     this.apiUrl = 'http://localhost:8099/api/';
@@ -23,9 +17,7 @@ export class TodoService {
   }
 
   getAll(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(`${this.apiUrl}`).pipe(
-      delay(2000) // Simulate network delay for demonstration of progress bar
-    );
+    return this.http.get<Todo[]>(`${this.apiUrl}`);
   }
 
   getFilteredMockData(searchTerm: string): Observable<Todo[]> {

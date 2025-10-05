@@ -1,6 +1,8 @@
-import {Component} from '@angular/core';
-import {Todo, TodoService} from "./todo.service";
-import {Observable, Subscription} from "rxjs";
+import { Component } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
+import { TodoService } from "./todo.service";
+import { Todo } from './types/todo';
+import { delay } from 'rxjs/internal/operators/delay';
 
 @Component({
   selector: 'app-root',
@@ -32,8 +34,12 @@ export class AppComponent {
 
   constructor(todoService: TodoService) {
     this.todoService = todoService;
-    this.todos$ = todoService.getAll();
-    this.filteredTodos$ = todoService.getAll();
+    this.todos$ = todoService.getAll().pipe(
+      delay(2000) // Simulate network delay for demonstration of progress bar
+    );
+    this.filteredTodos$ = todoService.getAll().pipe(
+      delay(2000) // Simulate network delay for demonstration of progress bar
+    );
     this.todosAfterRemoval$ = new Observable<void>();
     this.removedTodosSubscription = new Subscription();
     this.currentSearchTerm = '';
