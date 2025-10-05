@@ -22,6 +22,10 @@ public class TodoService implements ITodoService {
         return dao.findAll();
     }
 
+    public List<Todo> getByTask(String task) {
+        return dao.findByTaskContainingIgnoreCase(task);
+    }
+
 	public void persist(Todo todo) {
         try {
             dao.save(todo);

@@ -49,7 +49,12 @@ export class AppComponent {
     this.todosAfterRemoval$ = this.todoService.remove(todo.id);
     this.removedTodosSubscription = this.todosAfterRemoval$.subscribe({
       next: () => {
-        this.filteredTodos$ = this.todoService.getFilteredMockData(this.currentSearchTerm);
+        if (this.currentSearchTerm) {
+          this.filteredTodos$ = this.todoService.getFilteredMockData(this.currentSearchTerm);
+        } else {
+          this.filteredTodos$ = this.todoService.getAll();
+        }
+        this.isLoading = false;
       },
       error: (err) => {
         alert(`Failed to remove the item: ${err}\nPlease try again.`);

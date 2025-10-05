@@ -10,6 +10,8 @@ import com.todo.domain.Todo;
 public interface ITodoDao extends CrudRepository<Todo, Integer> {
 	
 	List<Todo> findAll();
+
+    List<Todo> findByTaskContainingIgnoreCase(String task);
 	
 	Todo save(Todo todo);
 

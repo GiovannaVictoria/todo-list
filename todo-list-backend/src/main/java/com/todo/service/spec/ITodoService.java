@@ -8,6 +8,8 @@ public interface ITodoService {
 
 	List<Todo> getAll();
 
+    List<Todo> getByTask(String task);
+
 	void persist(Todo todo);
 
 	void removeById(Integer id);
